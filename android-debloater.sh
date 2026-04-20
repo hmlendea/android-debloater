@@ -29,7 +29,7 @@ function is_android_package_installed {
 
 function is_android_package_disabled {
     local PACKAGE_NAME="${1}"
-    
+
     ! is_android_package_installed "${PACKAGE_NAME}" && return 0
 
     adb shell pm list packages --user 0 -d | sed -e 's/^package://g' -e 's/[^a-zA-Z0-9.-]//g' | grep -q "^${PACKAGE_NAME}$" && return 0
@@ -107,6 +107,7 @@ if [ "${DEVICE_TYPE}" = 'Phone' ]; then
     install_android_package 'org.fossify.clock' 'https://f-droid.org/repo/org.fossify.clock_1.apk'
     install_android_package 'org.fossify.filemanager' 'https://f-droid.org/repo/org.fossify.filemanager_2.apk'
     install_android_package 'org.fossify.gallery' 'https://f-droid.org/repo/org.fossify.gallery_9.apk'
+    install_android_package 'org.fossify.home' 'https://f-droid.org/repo/org.fossify.home_16.apk'
     install_android_package 'org.fossify.keyboard' 'https://f-droid.org/repo/org.fossify.keyboard_3.apk'
 
     #install_android_package 'com.automattic.simplenote' 'https://github.com/Automattic/simplenote-android/releases/download/2.35/simplenote.apk'
@@ -142,6 +143,9 @@ disable_android_package \
     'com.google.android.tts' \
     'com.samsung.android.accessibility.talkback' \
     'com.samsung.SMT'
+# Accessibility - Voice
+disable_android_package \
+    'com.google.android.apps.accessibility.voiceaccess'
 
 # App Management
 disable_android_package \
@@ -158,9 +162,11 @@ disable_android_package \
     'com.google.ar.lens' \
     'com.samsung.android.ardrawing' \
     'com.samsung.android.aremoji' \
-    'com.samsung.android.arzone'
+    'com.samsung.android.aremoji.editor' \
+    'com.samsung.android.arzone' \
+    'com.sec.android.mimage.avatarstickers'
 
-# Backup & Restore & Sync
+# Backup & Mover & Restore & Sync
 disable_android_package \
     'com.android.backupconfirm' \
     'com.android.calllogbackup' \
@@ -175,6 +181,7 @@ disable_android_package \
     'com.miui.cloudservice' \
     'com.miui.micloudsync' \
     'com.oneplus.opbackup' \
+    'com.sec.android.easyMover' \
     'com.xiaomi.micloud.sdk'
 
 # Browser
@@ -204,6 +211,7 @@ disable_android_package \
     'com.oplus.camera' \
     'com.oppo.camera' \
     'com.sec.android.app.camera' \
+    'com.snap.camerakit.plugin.v1' \
     'foundation.e.camera' \
     'org.lineageos.snap'
 
@@ -341,6 +349,10 @@ disable_android_package \
     'com.xiaomi.mimusic2' \
     'org.lineageos.eleven'
 
+# News
+disable_android_package \
+    'de.axelspringer.yana.zeropage'
+
 # Notes
 disable_android_package \
     'com.asus.supernote' \
@@ -358,6 +370,11 @@ disable_android_package \
     'com.samsung.android.kidsinstaller'
 uninstall_android_package \
     'com.google.android.gms.supervision'
+
+# Personalisation
+uninstall_android_package \
+    'com.google.android.as.oss' \
+    'com.google.android.as'
 
 # Radio
 disable_android_package \
@@ -548,7 +565,6 @@ disable_android_package \
 ### Others
 disable_android_package 'com.google.android.apps.turbo' # Device Health Services
 disable_android_package 'com.google.android.apps.wellbeing'
-disable_android_package 'com.google.android.as' # Android System Intelligence
 
 disable_android_package \
     'android.autoinstalls.config.Xiaomi.qssi' \
