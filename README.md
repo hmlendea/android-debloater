@@ -19,6 +19,7 @@ The script is intentionally conservative by default: it primarily disables packa
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Run](#run)
+- [Architecture](#architecture)
 - [Contributing](#contributing)
 - [Helping out](#helping-out)
 - [License](#license)
