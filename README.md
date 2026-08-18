@@ -19,6 +19,7 @@ The script is intentionally conservative by default: it primarily disables packa
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Run](#run)
+- [Architecture](#architecture)
 - [Contributing](#contributing)
 - [Helping out](#helping-out)
 - [License](#license)
@@ -109,6 +110,10 @@ adb devices
 ```bash
 bash ./android-debloater.sh
 ```
+
+## 🏗️ Architecture
+
+See the [architecture documentation](./ARCHITECTURE.md) for the current system boundary, runtime flow, integration contracts, and design constraints.
 
 ## 🤝 Contributing
 
