@@ -110,6 +110,10 @@ adb devices
 bash ./android-debloater.sh
 ```
 
+## 🏗️ Architecture
+
+See the [architecture documentation](./ARCHITECTURE.md) for the current system boundary, runtime flow, integration contracts, and design constraints.
+
 ## 🤝 Contributing
 
 You are welcome to bring any suggestion, feedback or modification to this project.
