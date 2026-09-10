@@ -1,4 +1,5 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
+[![Build Status](https://github.com/hmlendea/android-debloater/actions/workflows/bash.yml/badge.svg)](https://github.com/hmlendea/android-debloater/actions/workflows/bash.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
 
 # Android Debloater (ADB)
@@ -19,6 +20,7 @@ The script is intentionally conservative by default: it primarily disables packa
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Run](#run)
+  - [Continuous Integration](#continuous-integration)
 - [Architecture](#architecture)
 - [Contributing](#contributing)
 - [Helping out](#helping-out)
@@ -81,6 +83,7 @@ adb shell pm list packages --user 0 -d
 
 - Bash
 - Android Platform Tools (`adb`)
+- ShellCheck
 - `wget`
 
 ### Setup
@@ -109,6 +112,14 @@ adb devices
 
 ```bash
 bash ./android-debloater.sh
+```
+
+### Continuous Integration
+
+GitHub Actions validates every push and pull request targeting `master`. Reproduce the validation locally with:
+```bash
+shopt -s globstar nullglob
+shellcheck **/*.sh --severity error
 ```
 
 ## 🏗️ Architecture

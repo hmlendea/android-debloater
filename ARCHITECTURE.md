@@ -14,6 +14,7 @@ This document describes the current architecture of Android Debloater. Its scope
 - [Key Flows](#key-flows)
   - [Phone Provisioning Flow](#phone-provisioning-flow)
   - [Package Deactivation Flow](#package-deactivation-flow)
+    - [Continuous Integration Flow](#continuous-integration-flow)
 - [Cross-Cutting Concerns](#cross-cutting-concerns)
   - [Security and Privacy](#security-and-privacy)
   - [Error Handling](#error-handling)
@@ -36,7 +37,7 @@ This document is intended for contributors who need to understand where device s
 
 ## 🌐 System Context
 
-The repository owns only the host-side orchestration script. It does not own the Android device, the Android package manager, or the upstream APK distribution endpoints. Trust is split between the local operator host, the ADB transport, and the connected Android device that authorises debugging access.
+The repository owns the host-side orchestration script and its GitHub Actions validation workflow. It does not own the Android device, the Android package manager, upstream APK distribution endpoints, or GitHub-hosted infrastructure. Trust is split between the local operator host, the ADB transport, the connected Android device that authorises debugging access, and GitHub Actions for repository validation.
 
 ```mermaid
 flowchart LR
@@ -47,6 +48,9 @@ flowchart LR
     Device -->|package listings and command results| ADB
     ADB -->|stdout and stderr| Script
     Script -->|console progress and failures| Operator
+    Contributor[Contributor] -->|push or pull request| GitHub[GitHub repository]
+    GitHub -->|workflow event| Actions[GitHub Actions]
+    Actions -->|ShellCheck diagnostics| Contributor
 ```
 
 The principal external boundaries are:
@@ -54,6 +58,7 @@ The principal external boundaries are:
 - **ADB client:** Carries all device discovery, package inspection, enable, disable, uninstall, and install commands.
 - **Android device:** Owns the package catalogue and the persistent package-enabled state for user `0` that the script mutates.
 - **APK sources:** Provide optional phone-only application binaries over HTTPS for Aurora Store, F-Droid, Fossify applications, and Breezy Weather.
+- **GitHub and GitHub Actions:** Host repository events and execute the ShellCheck validation workflow on GitHub-managed Ubuntu runners.
 
 ## 🏗️ Architectural Style
 
@@ -112,6 +117,7 @@ The principal runtime sequence is:
 | `Device Classifier` | Distinguish `Phone` from `TV` through a package heuristic | `is_android_package_installed` | Runs once per invocation |
 | `Provisioning Stage` | Install alternative APKs for phones when missing | `install_android_package`, HTTPS endpoints | Conditional stage owned by the script |
 | `Debloat Catalogue Executor` | Apply the curated package-operation list in source order | Package helper functions, hard-coded package identifiers | Dominant runtime stage owned by the script |
+| `Continuous Integration Workflow` | Validate all repository Bash scripts with ShellCheck | GitHub Actions, `actions/checkout`, `shellcheck` | One GitHub-hosted job per qualifying event or manual dispatch |
 
 ## 💾 Data Architecture
 
@@ -146,6 +152,7 @@ flowchart LR
 | `adb shell pm install-existing` | Outbound | Android system-package restoration for user `0` | `Package Mutation Helpers` | Available only when the package remains in the device image |
 | `adb install --user 0` | Outbound | APK installation from a host file | `Provisioning Stage` | Installation failure surfaces through command output; the script still removes the temporary file |
 | `wget --continue URL -O FILE` | Outbound | HTTPS file download into a named APK path | `Provisioning Stage` | No explicit checksum or retry policy is implemented in the script |
+| `GitHub Actions` | Inbound | Pushes and pull requests targeting `master`, plus manual dispatch | `Continuous Integration Workflow` | ShellCheck errors fail the `check` job and surface as workflow diagnostics |
 
 ## 🔀 Key Flows
 
@@ -208,6 +215,26 @@ sequenceDiagram
 ```
 
 The deactivation pass is ordered, synchronous, and best-effort. Each helper call re-evaluates current device state rather than relying on an in-memory cache, which improves idempotence at the cost of repeated ADB round-trips. The script primarily disables packages and uses uninstall operations only for a smaller explicit subset, preserving the repository’s conservative recovery posture.
+
+### Continuous Integration Flow
+
+```mermaid
+sequenceDiagram
+    participant Contributor
+    participant GitHub
+    participant Runner as Ubuntu runner
+    participant ShellCheck
+
+    Contributor->>GitHub: Push, pull request, or manual dispatch
+    GitHub->>Runner: Start Bash workflow
+    Runner->>GitHub: Check out repository
+    Runner->>ShellCheck: Analyse all **/*.sh files at error severity
+    ShellCheck-->>Runner: Diagnostics and exit status
+    Runner-->>GitHub: Publish job result
+    GitHub-->>Contributor: Display status and diagnostics
+```
+
+The workflow validates every Bash script in the repository for pushes and pull requests targeting `master`; maintainers can also invoke it manually. The job receives read-only repository-content permission, pins the checkout action to an immutable commit, and fails when ShellCheck reports an error-severity diagnostic.
 
 ## 🧵 Cross-Cutting Concerns
 
@@ -281,12 +308,13 @@ The deployment unit is one repository script executed from a local shell on an o
 
 ## ✅ Testing and Verification
 
-The repository currently contains no automated test suite, no shell lint configuration, and no fixture-based device simulation. Architecture-sensitive verification is therefore split between syntax checking and manual execution against a connected Android device.
+The repository contains no device-level automated test suite and no fixture-based device simulation. GitHub Actions provides automated static analysis with ShellCheck, while runtime conduct remains subject to manual execution against a connected Android device.
 
 Execute the principal automated verification with:
 
 ```bash
-bash -n ./android-debloater.sh
+shopt -s globstar nullglob
+shellcheck **/*.sh --severity error
 ```
 
 Manual verification remains material for:
@@ -318,6 +346,7 @@ Manual verification remains material for:
 | Area | Path |
 |------|------|
 | Host-side orchestration script | `android-debloater.sh` |
+| Continuous integration workflow | `.github/workflows/bash.yml` |
 | User-facing usage and recovery guidance | `README.md` |
 | Repository architecture description | `ARCHITECTURE.md` |
 
