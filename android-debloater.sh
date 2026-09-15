@@ -166,6 +166,10 @@ disable_android_package \
     'com.samsung.android.arzone' \
     'com.sec.android.mimage.avatarstickers'
 
+# Audio
+disable_android_package \
+    'com.miui.audiomonitor'
+
 # Backup & Mover & Restore & Sync
 disable_android_package \
     'com.android.backupconfirm' \
@@ -328,6 +332,10 @@ disable_android_package \
     'com.asus.keyboard' \
     'com.samsung.android.honeyboard'
 
+# Location
+disable_android_package \
+    'com.google.android.gms.location.history'
+
 # 1 Manual & Help & Guides
 disable_android_package \
     'com.android.providers.userdictionary' \
@@ -394,6 +402,12 @@ disable_android_package \
 disable_android_package \
     'com.asus.quicksearch'
 
+# Security
+disable_android_package \
+    'com.miui.guardprovider' \
+    'com.lbe.security.miui' \
+    'com.miui.securitycenter'
+
 # Sharing
 disable_android_package \
     'com.asus.shareim' \
@@ -453,7 +467,8 @@ uninstall_android_package 'com.oplus.themestore'
 
 # Vendor Account
 disable_android_package \
-    'com.osp.app.signin'
+    'com.osp.app.signin' \
+    'com.xiaomi.account'
 
 # Vendor Social
 disable_android_package \
