@@ -22,6 +22,8 @@ The script is intentionally conservative by default: it primarily disables packa
   - [Run](#run)
   - [Continuous Integration](#continuous-integration)
 - [Architecture](#architecture)
+- [Security](#security)
+- [Privacy](#privacy)
 - [Contributing](#contributing)
 - [Helping out](#helping-out)
 - [License](#license)
@@ -125,6 +127,14 @@ shellcheck **/*.sh --severity error
 ## 🏗️ Architecture
 
 See the [architecture documentation](./ARCHITECTURE.md) for the current system boundary, runtime flow, integration contracts, and design constraints.
+
+## 🔒 Security
+
+See the [security policy](./SECURITY.md) for supported versions, vulnerability reporting, scope, disclosure policy, and recognition.
+
+## 🔐 Privacy
+
+See the [privacy policy](./PRIVACY.md) for data handling practices, self-hosted deployment responsibilities, external integrations, and contact information.
 
 ## 🤝 Contributing
 
