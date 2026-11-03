@@ -166,6 +166,10 @@ disable_android_package \
     'com.samsung.android.arzone' \
     'com.sec.android.mimage.avatarstickers'
 
+# Artificial Intelligence
+disable_android_package \
+    'com.google.android.apps.bard'
+
 # Audio
 disable_android_package \
     'com.miui.audiomonitor'
@@ -653,7 +657,8 @@ disable_android_package \
     'com.google.android.printservice.recommendation' \
     'com.google.android.projection.gearhead' \
     'com.google.android.safetycenter.resources' \
-    'com.google.android.videos'
+    'com.google.android.videos' \
+    'com.google.android.verifier'
 
 # Demetafy
 disable_android_package \
