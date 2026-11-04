@@ -24,6 +24,7 @@ The script is intentionally conservative by default: it primarily disables packa
 - [Architecture](#architecture)
 - [Security](#security)
 - [Privacy](#privacy)
+- [Code of Conduct](#code-of-conduct)
 - [Contributing](#contributing)
 - [Helping out](#helping-out)
 - [License](#license)
@@ -135,6 +136,10 @@ See the [security policy](./SECURITY.md) for supported versions, vulnerability r
 ## 🔐 Privacy
 
 See the [privacy policy](./PRIVACY.md) for data handling practices, self-hosted deployment responsibilities, external integrations, and contact information.
+
+## 📜 Code of Conduct
+
+See the [Code of Conduct](./CODE_OF_CONDUCT.md) for the standards of conduct expected in all project spaces.
 
 ## 🤝 Contributing
 

@@ -16,7 +16,7 @@ Thank you for your interest in contributing to Android Debloater! This document 
 
 ## Code of Conduct
 
-By participating in this project, you agree to abide by the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/). Please report unacceptable behavior to the project maintainers.
+By participating in this project, you agree to abide by the [Code of Conduct](./CODE_OF_CONDUCT.md). Please report unacceptable behavior to the project maintainers.
 
 ## Getting Started
 
